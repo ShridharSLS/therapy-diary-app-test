@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
-import { Diary } from '@/types';
 
-export async function DELETE(request: NextRequest, context: { params: { uniqueId: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: { uniqueId: string } }) {
   try {
-    const { uniqueId } = context.params;
+    const { uniqueId } = params;
 
     if (!uniqueId) {
       return NextResponse.json({ message: 'Missing diary ID' }, { status: 400 });
@@ -12,7 +11,7 @@ export async function DELETE(request: NextRequest, context: { params: { uniqueId
 
     const client = await clientPromise;
     const db = client.db('therapy-diary');
-    const diariesCollection = db.collection<Diary>('diaries');
+    const diariesCollection = db.collection('diaries');
 
     const result = await diariesCollection.deleteOne({ uniqueId });
 

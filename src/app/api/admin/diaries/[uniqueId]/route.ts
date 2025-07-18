@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 
-export async function DELETE(request: NextRequest, { params }: { params: { uniqueId: string } }) {
+interface DeleteParams {
+  params: { 
+    uniqueId: string;
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: DeleteParams) {
   try {
     const { uniqueId } = params;
 

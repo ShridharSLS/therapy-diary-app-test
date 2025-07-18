@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { Card } from '@/types';
 import RichTextEditor from './RichTextEditor';
 
 interface AddCardFormProps {
   uniqueId: string;
-  onCardAdded: (newCard: any) => void;
+  onCardAdded: (newCard: Card) => void;
 }
 
 export default function AddCardForm({ uniqueId, onCardAdded }: AddCardFormProps) {
@@ -43,8 +44,12 @@ export default function AddCardForm({ uniqueId, onCardAdded }: AddCardFormProps)
       setTopic('');
       setTag('Before');
       setBody('');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setIsLoading(false);
     }

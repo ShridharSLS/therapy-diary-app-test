@@ -49,7 +49,7 @@ export default function CardStack({ cards, onDelete, onEdit }: CardStackProps) {
   if (cards.length === 0) {
     return (
       <div className="text-center bg-white p-8 rounded-lg shadow-md">
-        <p className="text-text-light">You haven't added any cards yet. Use the form above to get started.</p>
+        <p className="text-text-light">You haven&apos;t added any cards yet. Use the form above to get started.</p>
       </div>
     );
   }

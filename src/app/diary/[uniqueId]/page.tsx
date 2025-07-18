@@ -25,12 +25,16 @@ export default function DiaryPage() {
           if (!res.ok) {
             throw new Error('Could not find the diary. Please check the URL.');
           }
-          const data = await res.json();
+          const data: { diary: Diary } = await res.json();
           // Sort cards by creation date, newest first
           data.diary.cards.sort((a: Card, b: Card) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
           setDiary(data.diary);
-        } catch (err: any) {
-          setError(err.message);
+        } catch (err) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('An unknown error occurred while fetching the diary.');
+          }
         } finally {
           setLoading(false);
         }
@@ -50,7 +54,7 @@ export default function DiaryPage() {
   };
 
   const handleDeleteCard = async (cardId: string) => {
-    const originalCards = [...(diary?.cards || [])];
+    
     if (!diary) return;
 
     try {
@@ -70,10 +74,21 @@ export default function DiaryPage() {
         };
       });
       toast.success('Card deleted successfully!');
-    } catch (err: any) {
-      console.error('Failed to delete card:', err);
-      toast.error('Failed to delete card.');
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.error('Failed to delete card:', err);
+        toast.error('Failed to delete card.');
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred while deleting the card.');
+        toast.error('An unknown error occurred.');
+      }
+      // Revert state on error
+      setDiary(prevDiary => {
+        if (!prevDiary) return null;
+        const originalCards = [...(diary?.cards || [])];
+        return { ...prevDiary, cards: originalCards };
+      });
     }
   };
 

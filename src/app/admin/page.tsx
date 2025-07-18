@@ -30,10 +30,14 @@ export default function AdminPage() {
         if (!res.ok) {
           throw new Error('Failed to fetch diaries');
         }
-        const data = await res.json();
+        const data: { diaries: DiaryListItem[] } = await res.json();
         setDiaries(data.diaries);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred while fetching diaries.');
+        }
       } finally {
         setLoading(false);
       }
@@ -63,9 +67,14 @@ export default function AdminPage() {
       // Remove the diary from the local state to update the UI
       setDiaries((prevDiaries) => prevDiaries.filter((diary) => diary.uniqueId !== uniqueId));
       toast.success('Diary deleted successfully!');
-    } catch (err: any) {
-      setError(err.message);
-      toast.error('Failed to delete diary.');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        toast.error('Failed to delete diary.');
+      } else {
+        setError('An unknown error occurred while deleting the diary.');
+        toast.error('An unknown error occurred.');
+      }
     } finally {
       setIsDeleting(null);
     }

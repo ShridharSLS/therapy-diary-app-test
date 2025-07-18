@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
-import { Diary } from '@/types';
+import { Diary, Card } from '@/types';
+import { UpdateFilter } from 'mongodb';
 
 export async function PUT(request: Request, { params }: { params: { uniqueId: string; cardId: string } }) {
   try {
@@ -55,7 +56,7 @@ export async function DELETE(request: Request, { params }: { params: { uniqueId:
 
     const result = await diariesCollection.updateOne(
       { uniqueId },
-      { $pull: { cards: { id: cardId } } as any } // Use 'as any' to bypass strict typing issues with $pull
+      { $pull: { cards: { id: cardId } } } as UpdateFilter<Diary> // Use 'as any' to bypass strict typing issues with $pull
     );
 
     if (result.modifiedCount === 0) {

@@ -50,8 +50,12 @@ export default function EditCardModal({ card, uniqueId, isOpen, onClose, onCardU
       const data = await res.json();
       onCardUpdated(data.card);
       onClose();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     } finally {
       setIsLoading(false);
     }

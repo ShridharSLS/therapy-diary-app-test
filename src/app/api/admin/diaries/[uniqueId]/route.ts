@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { Diary } from '@/types';
 
-export async function DELETE(request: Request, context: { params: { uniqueId: string } }) {
+export async function DELETE(request: NextRequest, context: { params: { uniqueId: string } }) {
   try {
     const { uniqueId } = context.params;
 

@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { Diary } from '@/types';
 
-export async function DELETE(request: Request, { params }: { params: { uniqueId: string } }) {
+export async function DELETE(request: Request, context: { params: { uniqueId: string } }) {
   try {
-    const { uniqueId } = params;
+    const { uniqueId } = context.params;
 
     if (!uniqueId) {
       return NextResponse.json({ message: 'Missing diary ID' }, { status: 400 });

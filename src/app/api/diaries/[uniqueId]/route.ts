@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
-import { Diary } from '@/types';
+
 
 export async function GET(request: Request, { params }: { params: { uniqueId: string } }) {
   try {

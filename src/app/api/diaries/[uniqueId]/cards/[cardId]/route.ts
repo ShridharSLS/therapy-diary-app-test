@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
-import { Diary, Card } from '@/types';
+import { Diary } from '@/types';
 import { UpdateFilter } from 'mongodb';
 
 export async function PUT(request: Request, { params }: { params: { uniqueId: string; cardId: string } }) {
